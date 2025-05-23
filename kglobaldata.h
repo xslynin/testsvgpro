@@ -2,6 +2,7 @@
 #define __K_GLOBAL_DATA__
 
 #include "kshape.h"
+#include "kconfig.h" // 添加KConfig头文件
 
 #include <QObject>
 #include <QColor>
@@ -47,6 +48,11 @@ public:
 	~KGlobalData();
 
 	static KGlobalData *getGlobalDataIntance();
+
+	// 从注册表加载配置
+	void loadConfigFromRegistry();
+	// 保存配置到注册表
+	void saveConfigToRegistry();
 
 	void setDrawFlag(KGlobalData::KDrawFlag drawflag);
 	KDrawFlag getDrawFlag();
@@ -103,6 +109,9 @@ private:
 	KGlobalData(const KGlobalData &other) = delete;
 	KGlobalData(const KGlobalData &&other) = delete;
 	void operator=(const KGlobalData) = delete;
+
+	// 配置对象
+	KConfig m_config;
 
 	KDrawFlag m_drawFlag;
 	KColorFlag m_colorFlag;

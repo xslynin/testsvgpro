@@ -2,7 +2,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 
-#include "kconfig.h" // Include KConfig header
+#include "kglobaldata.h" // 使用 KGlobalData 来管理配置
 #include "ktoolbar.h"
 #include "ksvgmainwindow.h"
 #include "kcanvasparamsbar.h"
@@ -22,8 +22,11 @@ KMainWindow::KMainWindow(QWidget *parent)
     ui.setupUi(this);
     setWindowIcon(QIcon(":/icons/svg.png"));
 
-    // Load configuration
-    m_config.loadConfig();
+    // 确保 KGlobalData 已经从注册表加载了配置
+    KGlobalData::getGlobalDataIntance()->loadConfigFromRegistry();
+
+    // 从 KGlobalData 获取窗口配置
+    m_config.loadConfig(); // 仍然需要加载窗口位置和大小的配置
 
     // Set window geometry from loaded config
     if (m_config.windowWidth > 0 && m_config.windowHeight > 0) {
@@ -46,6 +49,9 @@ KMainWindow::~KMainWindow()
     m_config.windowWidth = width();
     m_config.windowHeight = height();
     m_config.saveConfig();
+    
+    // 确保 KGlobalData 的配置也保存到注册表
+    KGlobalData::getGlobalDataIntance()->saveConfigToRegistry();
 }
 
 
@@ -143,10 +149,7 @@ void KMainWindow::validateCanvasParams()
         KGlobalData::getGlobalDataIntance()->getPrevCanvasHeight(), KGlobalData::getGlobalDataIntance()->getPrevCanvasColor(),
         width, height, KGlobalData::getGlobalDataIntance()->getCanvasColor()));
 
-    // Update config with new canvas parameters
-    m_config.canvasWidth = width;
-    m_config.canvasHeight = height;
-    m_config.backgroundColor = canvasC.toStdString(); // Use updated canvasC
+    // 不再需要手动更新 m_config，因为 KGlobalData 会自动保存配置到注册表
 }
 
 void KMainWindow::validateShapeParams()
@@ -202,8 +205,7 @@ void KMainWindow::updateCanvasParamsToParamsBar()
 
     m_pSvgMainWin->m_pCanvas->setStyleSheet(QString("background-color:#%1").arg(str));
 
-    // Update config with new canvas color
-    m_config.backgroundColor = str.toStdString();
+    // 不再需要手动更新 m_config，因为 KGlobalData 会自动保存配置到注册表
 }
 
 void KMainWindow::switchPenStyle(const int index)

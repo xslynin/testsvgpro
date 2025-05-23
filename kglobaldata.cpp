@@ -23,6 +23,9 @@ KGlobalData::KGlobalData(QObject *parent)
 {
     //m_undoStack.setUndoLimit(20);
     connect(m_networkManager, &QNetworkAccessManager::finished, this, &KGlobalData::onButtonTipsReplyFinished);
+    
+    // 在初始化时从注册表加载配置
+    loadConfigFromRegistry();
 }
 
 KGlobalData *KGlobalData::getGlobalDataIntance()
@@ -32,6 +35,48 @@ KGlobalData *KGlobalData::getGlobalDataIntance()
     if (pinstance == nullptr)
         pinstance = &s_instance;
     return pinstance;
+}
+
+// 从注册表加载配置
+void KGlobalData::loadConfigFromRegistry()
+{
+    qDebug() << "KGlobalData: 从注册表加载配置...";
+    
+    // 加载配置
+    if (m_config.loadConfig()) {
+        // 更新全局数据
+        m_canvasWidth = m_config.canvasWidth;
+        m_canvasHeight = m_config.canvasHeight;
+        m_canvasColor = QString::fromStdString(m_config.backgroundColor);
+        
+        // 同时更新前一次的值，以避免不必要的撤销栈操作
+        m_prevCanvasWidth = m_canvasWidth;
+        m_prevCanvasHeight = m_canvasHeight;
+        m_prevCanvasColor = m_canvasColor;
+        
+        qDebug() << "KGlobalData: 配置加载成功 - 画布大小:" << m_canvasWidth << "x" << m_canvasHeight 
+                 << "背景色:" << m_canvasColor;
+    } else {
+        qDebug() << "KGlobalData: 配置加载失败，使用默认值";
+    }
+}
+
+// 保存配置到注册表
+void KGlobalData::saveConfigToRegistry()
+{
+    qDebug() << "KGlobalData: 保存配置到注册表...";
+    
+    // 更新配置对象
+    m_config.canvasWidth = m_canvasWidth;
+    m_config.canvasHeight = m_canvasHeight;
+    m_config.backgroundColor = m_canvasColor.toStdString();
+    
+    // 保存到注册表
+    if (m_config.saveConfig()) {
+        qDebug() << "KGlobalData: 配置保存成功";
+    } else {
+        qDebug() << "KGlobalData: 配置保存失败";
+    }
 }
 
 void KGlobalData::setDrawFlag(KGlobalData::KDrawFlag drawflag)
@@ -57,11 +102,15 @@ KGlobalData::KColorFlag KGlobalData::getColorFlag()
 void KGlobalData::setCanvasWidth(const int width)
 {
     this->m_canvasWidth = width;
+    // 当设置画布宽度时，保存配置到注册表
+    saveConfigToRegistry();
 }
 
 void KGlobalData::setCanvasHeight(const int height)
 {
     this->m_canvasHeight = height;
+    // 当设置画布高度时，保存配置到注册表
+    saveConfigToRegistry();
 }
 
 int KGlobalData::getPrevCanvasWidth() const
@@ -107,6 +156,8 @@ int KGlobalData::getCanvasHeight() const
 void KGlobalData::setCanvasColor(const QString& colorStr)
 {
     this->m_canvasColor = colorStr;
+    // 当设置画布颜色时，保存配置到注册表
+    saveConfigToRegistry();
 }
 
 QString KGlobalData::getCanvasColor()
@@ -218,5 +269,8 @@ void KGlobalData::onButtonTipsReplyFinished(QNetworkReply* reply)
 
 KGlobalData::~KGlobalData()
 {
+    // 在析构时保存配置到注册表
+    saveConfigToRegistry();
+    
     // networkManager is parented to this, so it will be deleted automatically
 }
