@@ -51,6 +51,7 @@ public:
 	void loadSvg();
 	void saveToSvg();
 	void saveToPng();
+
 signals:
 	void shapeParamChanged(KShape* shape);
 	void canvasParamsChanged();

@@ -170,11 +170,6 @@ QUndoStack* KGlobalData::getUndoStack()
     return &m_undoStack;
 }
 
-QUndoStack* KGlobalData::getUndoStack()
-{
-    return &m_undoStack;
-}
-
 // Fetch button tips from the API
 void KGlobalData::fetchButtonTips()
 {
