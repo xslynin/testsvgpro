@@ -102,15 +102,13 @@ KGlobalData::KColorFlag KGlobalData::getColorFlag()
 void KGlobalData::setCanvasWidth(const int width)
 {
     this->m_canvasWidth = width;
-    // 当设置画布宽度时，保存配置到注册表
-    saveConfigToRegistry();
+    // 不再每次设置画布宽度时都保存配置到注册表，只在程序关闭时保存
 }
 
 void KGlobalData::setCanvasHeight(const int height)
 {
     this->m_canvasHeight = height;
-    // 当设置画布高度时，保存配置到注册表
-    saveConfigToRegistry();
+    // 不再每次设置画布高度时都保存配置到注册表，只在程序关闭时保存
 }
 
 int KGlobalData::getPrevCanvasWidth() const
@@ -156,8 +154,7 @@ int KGlobalData::getCanvasHeight() const
 void KGlobalData::setCanvasColor(const QString& colorStr)
 {
     this->m_canvasColor = colorStr;
-    // 当设置画布颜色时，保存配置到注册表
-    saveConfigToRegistry();
+    // 不再每次设置画布颜色时都保存配置到注册表，只在程序关闭时保存
 }
 
 QString KGlobalData::getCanvasColor()

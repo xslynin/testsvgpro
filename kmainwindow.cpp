@@ -22,8 +22,7 @@ KMainWindow::KMainWindow(QWidget *parent)
     ui.setupUi(this);
     setWindowIcon(QIcon(":/icons/svg.png"));
 
-    // 确保 KGlobalData 已经从注册表加载了配置
-    KGlobalData::getGlobalDataIntance()->loadConfigFromRegistry();
+    // KGlobalData 在其构造函数中已经从注册表加载了配置，这里不需要重复加载
 
     // 从 KGlobalData 获取窗口配置
     m_config.loadConfig(); // 仍然需要加载窗口位置和大小的配置
@@ -149,7 +148,7 @@ void KMainWindow::validateCanvasParams()
         KGlobalData::getGlobalDataIntance()->getPrevCanvasHeight(), KGlobalData::getGlobalDataIntance()->getPrevCanvasColor(),
         width, height, KGlobalData::getGlobalDataIntance()->getCanvasColor()));
 
-    // 不再需要手动更新 m_config，因为 KGlobalData 会自动保存配置到注册表
+    // 不再需要手动更新 m_config，KGlobalData 会在程序关闭时保存配置到注册表
 }
 
 void KMainWindow::validateShapeParams()
@@ -205,7 +204,7 @@ void KMainWindow::updateCanvasParamsToParamsBar()
 
     m_pSvgMainWin->m_pCanvas->setStyleSheet(QString("background-color:#%1").arg(str));
 
-    // 不再需要手动更新 m_config，因为 KGlobalData 会自动保存配置到注册表
+    // 不再需要手动更新 m_config，KGlobalData 会在程序关闭时保存配置到注册表
 }
 
 void KMainWindow::switchPenStyle(const int index)
