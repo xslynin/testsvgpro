@@ -8,18 +8,18 @@ KGlobalData::KGlobalData(QObject *parent)
 	: QObject(parent)
 	, m_drawFlag(KDrawFlag::NoneDrawFlag)
 	, m_colorFlag(KColorFlag::NoneColorFlag)
-    , m_canvasColor("FFFFFF")
-    , m_canvasWidth(800)
-    , m_canvasHeight(600)
+	, m_canvasWidth(800)
+	, m_canvasHeight(600)
+	, m_canvasColor("FFFFFF")
+	, m_prevCanvasWidth(800)
+	, m_prevCanvasHeight(600)
 	, m_prevCanvasColor("FFFFFF")
-    , m_prevCanvasWidth(800)
-    , m_prevCanvasHeight(600)
-    , m_scale(1.0)
+	, m_scale(1.0)
 	, m_borderWidth(2)
 	, m_boderColor(Qt::gray)
 	, m_fillColor(Qt::white)
 	, m_penStyle(Qt::SolidLine)
-    , m_networkManager(new QNetworkAccessManager(this)) // Initialize network manager
+	, m_networkManager(new QNetworkAccessManager(this)) // Initialize network manager
 {
     //m_undoStack.setUndoLimit(20);
     connect(m_networkManager, &QNetworkAccessManager::finished, this, &KGlobalData::onButtonTipsReplyFinished);

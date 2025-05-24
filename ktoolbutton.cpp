@@ -8,34 +8,34 @@ KToolButton::KToolButton(KGlobalData::KDrawFlag drawflag, QWidget *parent)
 	, m_drawFlag(drawflag)
 {
     // Map draw flag to button identifier for tooltip fetching
-    switch (m_drawFlag)
+    switch (static_cast<int>(m_drawFlag))
     {
-    case KGlobalData::KDrawFlag::MouseDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::MouseDrawFlag):
         m_buttonIdentifier = "selectionbutton";
         break;
-    case KGlobalData::KDrawFlag::PenDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::PenDrawFlag):
         m_buttonIdentifier = "freehandlinedrawbutton";
         break;
-    case KGlobalData::KDrawFlag::LineDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::LineDrawFlag):
         m_buttonIdentifier = "linedrawbutton";
         break;
-    case KGlobalData::KDrawFlag::RectDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::RectDrawFlag):
         m_buttonIdentifier = "rectdrawbutton";
         break;
-    case KGlobalData::KDrawFlag::CircleDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::CircleDrawFlag):
         // No direct match in provided JSON, using a placeholder
         m_buttonIdentifier = "circlebutton";
         break;
-    case KGlobalData::KDrawFlag::PentDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::PentDrawFlag):
         m_buttonIdentifier = "pentagondrawbutton";
         break;
-    case KGlobalData::KDrawFlag::HexaDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::HexaDrawFlag):
         m_buttonIdentifier = "quadrilateraldrawbutton"; // Assuming Hexa is quadrilateral
         break;
-    case KGlobalData::KDrawFlag::StarDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::StarDrawFlag):
         m_buttonIdentifier = "stardrawbutton";
         break;
-    case KGlobalData::KDrawFlag::TextDrawFlag:
+    case static_cast<int>(KGlobalData::KDrawFlag::TextDrawFlag):
         // No direct match in provided JSON, using a placeholder
         m_buttonIdentifier = "textbutton";
         break;
@@ -62,33 +62,33 @@ KToolButton::~KToolButton()
 
 void KToolButton::initToolButton()
 {
-	switch (m_drawFlag)
+	switch (static_cast<int>(m_drawFlag))
 	{
-	case KGlobalData::KDrawFlag::MouseDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::MouseDrawFlag):
 		m_iconName = "mouse.svg";
 		break;
-	case KGlobalData::KDrawFlag::PenDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::PenDrawFlag):
 		m_iconName = "pen.svg";
 		break;
-	case KGlobalData::KDrawFlag::LineDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::LineDrawFlag):
 		m_iconName = "line.svg";
 		break;
-	case KGlobalData::KDrawFlag::RectDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::RectDrawFlag):
 		m_iconName = "rect.svg";
 		break;
-	case KGlobalData::KDrawFlag::CircleDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::CircleDrawFlag):
 		m_iconName = "circle.svg";
 		break;
-	case KGlobalData::KDrawFlag::PentDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::PentDrawFlag):
 		m_iconName = "pent.svg";
 		break;
-	case KGlobalData::KDrawFlag::HexaDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::HexaDrawFlag):
 		m_iconName = "hexa.svg";
 		break;
-	case KGlobalData::KDrawFlag::StarDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::StarDrawFlag):
 		m_iconName = "star.svg";
 		break;
-	case KGlobalData::KDrawFlag::TextDrawFlag:
+	case static_cast<int>(KGlobalData::KDrawFlag::TextDrawFlag):
 		m_iconName = "text.svg";
 		break;
 	default:

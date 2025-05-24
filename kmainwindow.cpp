@@ -3,7 +3,7 @@
 #include <QComboBox>
 
 #include "kglobaldata.h" // 使用 KGlobalData 来管理配置
-#include "ktoolbar.h"
+#include "ktoolbar.h" // 包含KToolBar类定义
 #include "ksvgmainwindow.h"
 #include "kcanvasparamsbar.h"
 #include "kshapeparamsbar.h"
